@@ -1,0 +1,1870 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pharma Guide — Smart Pharmacy & Clinical Monograph Platform</title>
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          colors: {
+            obsidian: {
+              950: '#000000',
+              900: '#050814',
+              850: '#0a1026',
+              800: '#0f1736',
+            },
+            royal: {
+              950: '#172554',
+              900: '#1e3a8a',
+              800: '#1e40af',
+              700: '#1d4ed8',
+              600: '#2563eb',
+              500: '#3b82f6',
+              400: '#60a5fa',
+              300: '#93c5fd',
+              200: '#bfdbfe',
+            },
+            niili: {
+              950: '#1e1b4b',
+              900: '#312e81',
+              800: '#3730a3',
+              700: '#4338ca',
+              600: '#4f46e5',
+              500: '#6366f1',
+              400: '#818cf8',
+              300: '#a5b4fc',
+              200: '#c7d2fe',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Pure Obsidian Black, Luminous Royal Blue & Rich Indigo (Niili) Theme */
+    body {
+      background-color: #000000;
+      color: #a5b4fc;
+    }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Pure Obsidian Black, Royal Blue & Deep Indigo (Niili) Theme */
+    body {
+      background-color: #000000;
+      color: #c7d2fe;
+    }
+    .view-section {
+      animation: fadeIn 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .medical-grid-bg {
+      background-image: radial-gradient(rgba(79, 70, 229, 0.28) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+    /* Custom Blue & Niili Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #000000;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #312e81;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #3b82f6;
+    }
+    /* High-contrast clinical print stylesheet */
+    @media print {
+      header, footer, .no-print {
+        display: none !important;
+      }
+      body {
+        background: #FFFFFF !important;
+        color: #09090B !important;
+      }
+      #monograph-printable {
+        background: #FFFFFF !important;
+        color: #09090B !important;
+        box-shadow: none !important;
+        border: 1px solid #E4E4E7 !important;
+        padding: 0 !important;
+      }
+      #monograph-printable * {
+        color: #09090B !important;
+        background-color: transparent !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-niili-600 selection:text-white bg-obsidian-950 text-niili-200">
+
+  <!-- Educational Disclaimer Top Strip -->
+  <div class="bg-obsidian-900 text-royal-300 text-xs py-2 px-4 border-b border-niili-900/70 no-print">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1 text-center sm:text-left">
+      <div class="flex items-center gap-2">
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-niili-950 text-royal-400 border border-niili-600/70">
+          CLINICAL EDUCATION REFERENCE
+        </span>
+        <span class="text-niili-200/90">Verified drug monographs curated for pharmacy students, pharmacists & healthcare learners.</span>
+      </div>
+      <span class="text-royal-400 font-bold hidden md:inline">Sohag University • Faculty of Pharmacy</span>
+    </div>
+  </div>
+
+  <!-- Main Sticky Navigation Header -->
+  <header class="sticky top-0 z-40 bg-obsidian-950/95 backdrop-blur-md border-b border-niili-900/80 shadow-lg shadow-niili-950/40 no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <!-- Brand Logo -->
+        <button onclick="navigateTo('home')" class="flex items-center gap-3 text-left group focus:outline-none">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-royal-600 via-niili-600 to-niili-950 flex items-center justify-center text-white shadow-md shadow-royal-600/40 border border-royal-400/60 group-hover:scale-105 transition-transform">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/>
+              <path d="m8.5 8.5 7 7"/>
+            </svg>
+          </div>
+          <div>
+            <span class="font-display font-extrabold text-xl tracking-tight text-royal-400 block leading-none">
+              Pharma <span class="text-niili-400">Guide</span>
+            </span>
+            <span class="text-[11px] font-semibold text-niili-300/80 tracking-wide">Smart Pharmacy Database</span>
+          </div>
+        </button>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden md:flex items-center gap-1.5">
+          <button onclick="navigateTo('home')" data-nav="home" class="nav-btn px-3.5 py-2 rounded-lg text-sm font-bold transition-colors">
+            Home
+          </button>
+          <button onclick="navigateTo('explorer')" data-nav="explorer" class="nav-btn px-3.5 py-2 rounded-lg text-sm font-bold transition-colors">
+            Medicine Explorer
+          </button>
+          <button onclick="navigateTo('about')" data-nav="about" class="nav-btn px-3.5 py-2 rounded-lg text-sm font-bold transition-colors">
+            About Us
+          </button>
+          <div class="h-5 w-px bg-niili-900/80 mx-1.5"></div>
+          <button onclick="navigateTo('admin')" data-nav="admin" id="header-admin-btn" class="nav-btn inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-royal-600 to-niili-600 text-white hover:from-royal-500 hover:to-niili-500 transition-all shadow-md shadow-niili-900/70 border border-royal-400/50">
+            <i data-lucide="shield-check" class="w-4 h-4 text-white"></i>
+            <span id="header-admin-label">Admin Portal</span>
+          </button>
+        </nav>
+
+        <!-- Mobile Menu Button -->
+        <div class="flex md:hidden items-center gap-2">
+          <button onclick="navigateTo('admin')" class="p-2.5 rounded-xl bg-gradient-to-r from-royal-600 to-niili-600 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm border border-royal-400/50">
+            <i data-lucide="shield-check" class="w-4 h-4 text-white"></i>
+            <span>Admin</span>
+          </button>
+          <button onclick="toggleMobileMenu()" class="p-2.5 rounded-xl text-royal-400 hover:bg-niili-950/70 border border-niili-900/70 focus:outline-none" aria-label="Toggle menu">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown Navigation -->
+    <div id="mobile-menu" class="hidden md:hidden bg-obsidian-900 border-t border-niili-900/80 px-4 pt-2 pb-4 space-y-1.5 shadow-2xl">
+      <button onclick="navigateTo('home'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-xl text-sm font-bold text-royal-300 hover:bg-niili-950/80 flex items-center gap-3">
+        <i data-lucide="home" class="w-4 h-4 text-royal-400"></i> Home
+      </button>
+      <button onclick="navigateTo('explorer'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-xl text-sm font-bold text-royal-300 hover:bg-niili-950/80 flex items-center gap-3">
+        <i data-lucide="search" class="w-4 h-4 text-royal-400"></i> Medicine Explorer
+      </button>
+      <button onclick="navigateTo('about'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-xl text-sm font-bold text-royal-300 hover:bg-niili-950/80 flex items-center gap-3">
+        <i data-lucide="info" class="w-4 h-4 text-royal-400"></i> About Us
+      </button>
+      <button onclick="navigateTo('admin'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-xl text-sm font-bold bg-gradient-to-r from-royal-600 to-niili-600 text-white flex items-center gap-3">
+        <i data-lucide="shield-check" class="w-4 h-4 text-white"></i> Admin Dashboard
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="flex-grow">
+
+    <!-- ==================== 1. HOME PAGE VIEW ==================== -->
+    <section id="view-home" class="view-section">
+      <!-- Hero Banner -->
+      <div class="relative bg-obsidian-950 border-b border-niili-900/70 overflow-hidden medical-grid-bg">
+        <div class="absolute inset-0 bg-gradient-to-b from-niili-950/40 via-obsidian-950/90 to-obsidian-950 pointer-events-none"></div>
+        <!-- Blue & Niili Ambient Glow -->
+        <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[560px] h-[230px] bg-gradient-to-r from-royal-600/25 via-niili-600/25 to-royal-500/25 blur-3xl rounded-full pointer-events-none"></div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16 md:pt-16 md:pb-20">
+          <div class="max-w-3xl mx-auto text-center">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-niili-950/90 border border-niili-600/70 text-royal-300 text-xs font-extrabold mb-6 shadow-sm">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5 text-niili-400"></i>
+              <span>Evidence-Based Drug Monograph System</span>
+            </div>
+            <h1 class="font-display font-extrabold text-3xl sm:text-5xl text-white tracking-tight leading-tight mb-4">
+              Clinical Drug Intelligence at Your <span class="text-transparent bg-clip-text bg-gradient-to-r from-royal-400 via-niili-400 to-royal-300">Fingertips</span>
+            </h1>
+            <p class="text-niili-200/90 text-base sm:text-lg mb-8 leading-relaxed">
+              Search verified monographs by brand name, generic name, or active pharmaceutical ingredient. Built for pharmacy students, clinical pharmacists, and healthcare educators.
+            </p>
+
+            <!-- Large Central Hero Search Bar -->
+            <div class="relative max-w-2xl mx-auto">
+              <div class="flex flex-col sm:flex-row items-stretch sm:items-center bg-obsidian-850 rounded-2xl shadow-2xl shadow-niili-950/60 border-2 border-niili-800 focus-within:border-royal-500 transition-all p-1.5">
+                <div class="flex items-center flex-grow px-3 py-2">
+                  <i data-lucide="search" class="w-5 h-5 text-royal-400 mr-3 shrink-0"></i>
+                  <input
+                    type="text"
+                    id="hero-search-input"
+                    placeholder="Search Brand (e.g., Augmentin), Generic, or Active Ingredient..."
+                    class="w-full text-royal-100 placeholder-niili-400/50 text-sm sm:text-base focus:outline-none bg-transparent"
+                    oninput="handleHeroSearchInput(this.value)"
+                    onkeydown="if(event.key==='Enter') executeHeroSearch()"
+                  />
+                  <button id="hero-clear-btn" onclick="clearHeroSearch()" class="hidden text-niili-400 hover:text-royal-300 p-1">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                  </button>
+                </div>
+                <button onclick="executeHeroSearch()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-royal-600 to-niili-600 hover:from-royal-500 hover:to-niili-500 text-white font-bold text-sm transition-all shadow-md shadow-niili-950/80 border border-royal-400/50 shrink-0">
+                  Search Medicines
+                </button>
+              </div>
+
+              <!-- Instant Live Preview Dropdown under Hero Search -->
+              <div id="hero-instant-results" class="hidden absolute left-0 right-0 mt-2 bg-obsidian-850 rounded-2xl shadow-2xl shadow-black border border-niili-700 text-left overflow-hidden z-30 max-h-80 overflow-y-auto"></div>
+            </div>
+
+            <!-- Quick Search Tags -->
+            <div class="mt-4 flex flex-wrap items-center justify-center gap-2 text-xs">
+              <span class="font-bold text-niili-300">Popular searches:</span>
+              <button onclick="quickSearchTerm('Amoxicillin')" class="px-2.5 py-1 rounded-lg bg-obsidian-850 border border-niili-800/80 text-royal-300 hover:border-royal-400 hover:text-white font-semibold transition-colors">Amoxicillin</button>
+              <button onclick="quickSearchTerm('Paracetamol')" class="px-2.5 py-1 rounded-lg bg-obsidian-850 border border-niili-800/80 text-royal-300 hover:border-royal-400 hover:text-white font-semibold transition-colors">Paracetamol</button>
+              <button onclick="quickSearchTerm('Metformin')" class="px-2.5 py-1 rounded-lg bg-obsidian-850 border border-niili-800/80 text-royal-300 hover:border-royal-400 hover:text-white font-semibold transition-colors">Metformin</button>
+              <button onclick="quickSearchTerm('Bisoprolol')" class="px-2.5 py-1 rounded-lg bg-obsidian-850 border border-niili-800/80 text-royal-300 hover:border-royal-400 hover:text-white font-semibold transition-colors">Bisoprolol</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Access Therapeutic Categories -->
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-6 gap-2">
+          <div>
+            <h2 class="font-display font-extrabold text-2xl text-royal-400">Therapeutic Categories</h2>
+            <p class="text-sm text-niili-300/80 mt-1">Browse medications organized by pharmacological classification</p>
+          </div>
+          <button onclick="navigateTo('explorer')" class="text-sm font-bold text-royal-400 hover:text-niili-300 inline-flex items-center gap-1">
+            View All Medicines <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <div id="home-categories-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+
+      <!-- Featured & Recently Added Medicines -->
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-6 gap-2">
+          <div>
+            <span class="text-xs font-extrabold uppercase tracking-wider text-niili-400">Clinical Index</span>
+            <h2 class="font-display font-extrabold text-2xl text-royal-400">Featured & Recently Added Medicines</h2>
+          </div>
+          <span id="home-total-badge" class="inline-flex items-center px-3.5 py-1 rounded-full text-xs font-extrabold bg-niili-950 text-royal-300 border border-niili-700">
+            0 Monographs Available
+          </span>
+        </div>
+
+        <div id="home-featured-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 2. MEDICINE EXPLORER VIEW ==================== -->
+    <section id="view-explorer" class="view-section hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div class="mb-8">
+        <h1 class="font-display font-extrabold text-3xl text-royal-400">Medicine Explorer & Search</h1>
+        <p class="text-niili-300/85 text-sm mt-1">Filter instantaneously across brand names, generic names, active ingredients, and dosage forms.</p>
+      </div>
+
+      <!-- Search & Filter Control Panel -->
+      <div class="bg-obsidian-850 rounded-2xl border border-niili-800/80 p-5 shadow-lg shadow-black mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+          <!-- Search Input -->
+          <div class="md:col-span-6 relative">
+            <label class="block text-xs font-extrabold text-royal-400 uppercase tracking-wider mb-1.5">Search Drug Database</label>
+            <div class="relative">
+              <i data-lucide="search" class="w-4 h-4 text-royal-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+              <input
+                type="text"
+                id="explorer-search-input"
+                placeholder="Brand, Generic, or Active Ingredient..."
+                oninput="renderExplorer()"
+                class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-obsidian-900 border border-niili-800 text-royal-100 placeholder-niili-400/50 text-sm focus:outline-none focus:border-royal-500 focus:ring-2 focus:ring-royal-500/20"
+              />
+            </div>
+          </div>
+
+          <!-- Category Dropdown -->
+          <div class="md:col-span-3">
+            <label class="block text-xs font-extrabold text-royal-400 uppercase tracking-wider mb-1.5">Category</label>
+            <select id="explorer-category-select" onchange="renderExplorer()" class="w-full px-3.5 py-2.5 rounded-xl bg-obsidian-900 border border-niili-800 text-niili-200 text-sm focus:outline-none focus:border-royal-500">
+              <option value="ALL">All Categories</option>
+            </select>
+          </div>
+
+          <!-- Pharmaceutical Form Filter -->
+          <div class="md:col-span-3">
+            <label class="block text-xs font-extrabold text-royal-400 uppercase tracking-wider mb-1.5">Pharmaceutical Form</label>
+            <select id="explorer-form-select" onchange="renderExplorer()" class="w-full px-3.5 py-2.5 rounded-xl bg-obsidian-900 border border-niili-800 text-niili-200 text-sm focus:outline-none focus:border-royal-500">
+              <option value="ALL">All Dosage Forms</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Category Quick Pills -->
+        <div id="explorer-category-pills" class="flex flex-wrap gap-2 mt-4 pt-4 border-t border-niili-900/60">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- Results Count & Clear Filters -->
+      <div class="flex items-center justify-between mb-5">
+        <p id="explorer-results-count" class="text-sm font-bold text-royal-400">Showing 0 medicines</p>
+        <button onclick="resetExplorerFilters()" class="text-xs font-bold text-niili-400 hover:text-royal-300 underline">
+          Reset All Filters
+        </button>
+      </div>
+
+      <!-- Medicine Cards Grid -->
+      <div id="explorer-results-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Empty State -->
+      <div id="explorer-empty-state" class="hidden bg-obsidian-850 rounded-2xl border border-niili-800/80 p-12 text-center my-6">
+        <div class="w-16 h-16 rounded-2xl bg-niili-950 border border-niili-700 text-royal-400 flex items-center justify-center mx-auto mb-4">
+          <i data-lucide="file-search" class="w-8 h-8"></i>
+        </div>
+        <h3 class="font-display font-extrabold text-lg text-royal-400">No Matching Medicines Found</h3>
+        <p class="text-niili-300/80 text-sm max-w-md mx-auto mt-1 mb-5">
+          We couldn't find any drug monographs matching your current search keywords or category filter.
+        </p>
+        <button onclick="resetExplorerFilters()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-royal-600 to-niili-600 text-white text-sm font-bold hover:from-royal-500 hover:to-niili-500 transition-colors">
+          Clear Search & Filters
+        </button>
+      </div>
+    </section>
+
+    <!-- ==================== 3. MEDICINE DETAILS (MONOGRAPH) VIEW ==================== -->
+    <section id="view-details" class="view-section hidden max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <!-- Top Action Bar -->
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-6 no-print">
+        <button onclick="navigateTo('explorer')" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-obsidian-850 border border-niili-700 text-royal-300 hover:border-royal-400 hover:text-white text-sm font-bold shadow-sm transition-all">
+          <i data-lucide="arrow-left" class="w-4 h-4 text-royal-400"></i>
+          Back to Medicines
+        </button>
+        <div class="flex items-center gap-2">
+          <button onclick="window.print()" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-royal-600 to-niili-600 text-white hover:from-royal-500 hover:to-niili-500 text-sm font-bold shadow-md shadow-niili-950/70 border border-royal-400/50 transition-all">
+            <i data-lucide="printer" class="w-4 h-4 text-white"></i>
+            Print / Export Monograph
+          </button>
+        </div>
+      </div>
+
+      <!-- Monograph Clinical Sheet -->
+      <div id="monograph-printable" class="bg-obsidian-850 rounded-3xl border border-niili-700/80 shadow-2xl overflow-hidden">
+        <!-- Populated dynamically via JS -->
+      </div>
+    </section>
+
+    <!-- ==================== 4. ADMIN DASHBOARD & AUTH VIEW ==================== -->
+    <section id="view-admin" class="view-section hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+      <!-- Admin Login Gate -->
+      <div id="admin-login-container" class="max-w-md mx-auto my-8">
+        <div class="bg-obsidian-850 rounded-3xl border border-niili-700/80 shadow-2xl p-8">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-royal-600 via-niili-600 to-niili-950 border border-royal-400/60 text-white flex items-center justify-center mx-auto mb-5 shadow-lg shadow-niili-950/80">
+            <i data-lucide="lock" class="w-7 h-7"></i>
+          </div>
+          <h1 class="font-display font-extrabold text-2xl text-center text-royal-400">Administrator Portal</h1>
+          <p class="text-niili-300/80 text-sm text-center mt-1 mb-6">
+            Authorized access required to manage drug monographs and therapeutic categories.
+          </p>
+
+          <!-- Demo Presentation Credentials Box -->
+          <div class="bg-niili-950/70 border border-niili-700/70 rounded-xl p-3.5 mb-6 text-xs text-niili-200">
+            <div class="font-extrabold flex items-center gap-1.5 mb-1 text-royal-300">
+              <i data-lucide="key-round" class="w-3.5 h-3.5 text-royal-400"></i> University Presentation Credentials:
+            </div>
+            <div class="flex justify-between items-center font-mono bg-obsidian-950 px-2.5 py-1.5 rounded-lg border border-niili-800 mt-1">
+              <span>User: <strong class="text-royal-300">admin</strong></span>
+              <span>Pass: <strong class="text-royal-300">pharma2026</strong></span>
+              <button type="button" onclick="fillDemoCredentials()" class="text-niili-400 font-sans font-extrabold underline hover:text-royal-300">Auto-Fill</button>
+            </div>
+          </div>
+
+          <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+            <div>
+              <label class="block text-xs font-extrabold uppercase tracking-wider text-royal-400 mb-1.5">Username</label>
+              <input type="text" id="admin-username" required placeholder="Enter admin username" class="w-full px-4 py-3 rounded-xl bg-obsidian-900 border border-niili-800 text-royal-100 placeholder-niili-400/50 text-sm focus:outline-none focus:border-royal-500 focus:ring-2 focus:ring-royal-500/20" />
+            </div>
+            <div>
+              <label class="block text-xs font-extrabold uppercase tracking-wider text-royal-400 mb-1.5">Password</label>
+              <input type="password" id="admin-password" required placeholder="Enter password" class="w-full px-4 py-3 rounded-xl bg-obsidian-900 border border-niili-800 text-royal-100 placeholder-niili-400/50 text-sm focus:outline-none focus:border-royal-500 focus:ring-2 focus:ring-royal-500/20" />
+            </div>
+            <p id="admin-login-error" class="hidden text-xs font-bold text-royal-200 bg-niili-950 border border-royal-500/80 rounded-lg p-2.5"></p>
+            <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-royal-600 to-niili-600 hover:from-royal-500 hover:to-niili-500 text-white font-bold text-sm shadow-md shadow-niili-950/80 border border-royal-400/50 transition-all">
+              Sign In to Dashboard
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Authenticated Admin Dashboard -->
+      <div id="admin-dashboard-container" class="hidden space-y-8">
+        <!-- Dashboard Top Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-obsidian-850 p-6 rounded-2xl border border-niili-700/80 shadow-lg">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-royal-400 animate-pulse"></span>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-niili-300">Authenticated Session • Admin</span>
+            </div>
+            <h1 class="font-display font-extrabold text-2xl sm:text-3xl text-royal-400 mt-1">Pharmacy Database Management</h1>
+          </div>
+          <div class="flex flex-wrap items-center gap-2.5">
+            <button onclick="openMedicineFormModal()" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-royal-600 to-niili-600 hover:from-royal-500 hover:to-niili-500 text-white text-sm font-bold shadow-sm border border-royal-400/50 transition-all">
+              <i data-lucide="plus-circle" class="w-4 h-4"></i>
+              Add New Medicine
+            </button>
+            <button onclick="confirmResetDemoData()" class="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-obsidian-900 border border-niili-700 hover:border-royal-400 text-niili-200 text-sm font-bold transition-all">
+              <i data-lucide="rotate-ccw" class="w-4 h-4 text-royal-400"></i>
+              Reset Demo Data
+            </button>
+            <button onclick="handleAdminLogout()" class="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl border border-niili-700 text-royal-300 hover:bg-niili-950/80 text-sm font-bold transition-all">
+              <i data-lucide="log-out" class="w-4 h-4"></i>
+              Logout
+            </button>
+          </div>
+        </div>
+
+        <!-- KPI Summary Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-obsidian-850 p-5 rounded-2xl border border-niili-800/80 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-royal-950 border border-royal-700 text-royal-400 flex items-center justify-center">
+              <i data-lucide="pill" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <p class="text-xs font-extrabold text-niili-300 uppercase">Total Medicines</p>
+              <p id="kpi-total-medicines" class="font-display font-extrabold text-2xl text-royal-400">0</p>
+            </div>
+          </div>
+
+          <div class="bg-obsidian-850 p-5 rounded-2xl border border-niili-800/80 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-niili-950 border border-niili-700 text-niili-400 flex items-center justify-center">
+              <i data-lucide="layers" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <p class="text-xs font-extrabold text-niili-300 uppercase">Drug Categories</p>
+              <p id="kpi-total-categories" class="font-display font-extrabold text-2xl text-niili-400">0</p>
+            </div>
+          </div>
+
+          <div class="bg-obsidian-850 p-5 rounded-2xl border border-niili-800/80 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-obsidian-900 border border-royal-800 text-royal-400 flex items-center justify-center">
+              <i data-lucide="file-check-2" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <p class="text-xs font-extrabold text-niili-300 uppercase">Clinical Fields</p>
+              <p class="font-display font-extrabold text-2xl text-royal-400">11 / Drug</p>
+            </div>
+          </div>
+
+          <div class="bg-obsidian-850 p-5 rounded-2xl border border-niili-800/80 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-obsidian-900 border border-niili-800 text-niili-400 flex items-center justify-center">
+              <i data-lucide="database" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <p class="text-xs font-extrabold text-niili-300 uppercase">Database Storage</p>
+              <p id="kpi-storage-status" class="font-display font-bold text-sm text-royal-400 mt-1">LocalStorage Active</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Admin Grid: Medicines Table + Category Manager -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <!-- Manage Medicines Table (8 cols) -->
+          <div class="lg:col-span-8 bg-obsidian-850 rounded-2xl border border-niili-800/80 shadow-sm overflow-hidden flex flex-col">
+            <div class="p-5 border-b border-niili-800/70 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <h2 class="font-display font-extrabold text-lg text-royal-400">Medicine Records</h2>
+                <p class="text-xs text-niili-300/80">Edit clinical details or delete outdated monographs</p>
+              </div>
+              <div class="relative w-full sm:w-64">
+                <i data-lucide="search" class="w-4 h-4 text-royal-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                <input type="text" id="admin-table-search" oninput="renderAdminTable()" placeholder="Filter records..." class="w-full pl-9 pr-3 py-2 rounded-xl bg-obsidian-900 border border-niili-800 text-royal-100 placeholder-niili-400/50 text-xs focus:outline-none focus:border-royal-500" />
+              </div>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-obsidian-900 border-b border-niili-800/80 text-[11px] font-extrabold uppercase tracking-wider text-royal-400">
+                    <th class="py-3.5 px-4">Brand / Generic</th>
+                    <th class="py-3.5 px-4">Category</th>
+                    <th class="py-3.5 px-4 hidden sm:table-cell">Form</th>
+                    <th class="py-3.5 px-4 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-medicines-tbody" class="divide-y divide-niili-950 text-sm">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Manage Categories Panel (4 cols) -->
+          <div class="lg:col-span-4 bg-obsidian-850 rounded-2xl border border-niili-800/80 shadow-sm p-5 h-fit">
+            <h2 class="font-display font-extrabold text-lg text-royal-400">Manage Categories</h2>
+            <p class="text-xs text-niili-300/80 mt-0.5 mb-4">Add new therapeutic classes or remove empty ones.</p>
+
+            <form onsubmit="handleAddCategory(event)" class="flex gap-2 mb-5">
+              <input type="text" id="new-category-input" placeholder="e.g., Dermatology" required class="flex-grow px-3.5 py-2 rounded-xl bg-obsidian-900 border border-niili-800 text-royal-100 placeholder-niili-400/50 text-sm focus:outline-none focus:border-royal-500" />
+              <button type="submit" class="px-4 py-2 rounded-xl bg-gradient-to-r from-royal-600 to-niili-600 hover:from-royal-500 hover:to-niili-500 text-white text-xs font-bold shrink-0">
+                Add
+              </button>
+            </form>
+
+            <div id="admin-categories-list" class="space-y-2 max-h-96 overflow-y-auto pr-1">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 5. ABOUT US PAGE VIEW ==================== -->
+    <section id="view-about" class="view-section hidden max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <!-- Mission Hero Card -->
+      <div class="bg-gradient-to-br from-obsidian-900 via-niili-950/90 to-obsidian-950 border border-niili-700/80 rounded-3xl p-8 sm:p-12 shadow-2xl mb-10 relative overflow-hidden">
+        <div class="relative z-10 max-w-3xl">
+          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-niili-950 border border-niili-600 text-royal-300 text-xs font-extrabold mb-4">
+            <i data-lucide="graduation-cap" class="w-4 h-4 text-royal-400"></i> Academic Pharmaceutical Innovation
+          </span>
+          <h1 class="font-display font-extrabold text-3xl sm:text-4xl tracking-tight text-royal-400 mb-4">
+            Pharma <span class="text-niili-400">Guide</span>
+          </h1>
+          <p class="text-lg sm:text-xl text-niili-200 leading-relaxed font-medium">
+            A smart pharmaceutical platform designed to make medicine information more accessible and organized.
+          </p>
+        </div>
+      </div>
+
+      <!-- Developer & University Profile Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- Developer Card -->
+        <div class="lg:col-span-5 bg-obsidian-850 rounded-3xl border border-niili-700/80 p-8 shadow-lg">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-royal-600 via-niili-600 to-niili-950 border border-royal-400 text-white flex items-center justify-center font-display font-extrabold text-2xl shadow-md">
+              CM
+            </div>
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-niili-400">Platform Developer</span>
+              <h2 class="font-display font-extrabold text-xl text-royal-400">Carlos Michel Adel</h2>
+            </div>
+          </div>
+
+          <div class="space-y-4 border-t border-niili-800/70 pt-5 text-sm">
+            <div class="flex items-start gap-3">
+              <div class="w-9 h-9 rounded-xl bg-niili-950 border border-niili-700 text-royal-400 flex items-center justify-center shrink-0">
+                <i data-lucide="award" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <p class="text-xs text-niili-400 font-bold">Faculty</p>
+                <p class="font-extrabold text-royal-400">Faculty of Pharmacy</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3">
+              <div class="w-9 h-9 rounded-xl bg-niili-950 border border-niili-700 text-royal-400 flex items-center justify-center shrink-0">
+                <i data-lucide="landmark" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <p class="text-xs text-niili-400 font-bold">University</p>
+                <p class="font-extrabold text-royal-400">Sohag University</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3">
+              <div class="w-9 h-9 rounded-xl bg-niili-950 border border-niili-700 text-royal-400 flex items-center justify-center shrink-0">
+                <i data-lucide="book-open-check" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <p class="text-xs text-niili-400 font-bold">Target Audience</p>
+                <p class="font-semibold text-niili-200">Pharmacy Students, Community & Clinical Pharmacists, Healthcare Seekers</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Platform Pillars & Clinical Standards -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="bg-obsidian-850 rounded-3xl border border-niili-700/80 p-8 shadow-lg">
+            <h3 class="font-display font-extrabold text-xl text-royal-400 mb-3">Platform Vision & Clinical Architecture</h3>
+            <p class="text-niili-200/90 text-sm leading-relaxed mb-6">
+              Pharma Guide bridges the gap between dense pharmacopeial references and rapid point-of-care learning. By structuring every medication into 11 standardized clinical parameters—from active pharmaceutical ingredients and pharmacological classes to contraindications and storage requirements—students and practitioners can verify critical drug facts within seconds.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="p-4 rounded-2xl bg-obsidian-900 border border-niili-800/80">
+                <div class="w-9 h-9 rounded-xl bg-royal-600 text-white flex items-center justify-center mb-3">
+                  <i data-lucide="shield-alert" class="w-5 h-5"></i>
+                </div>
+                <h4 class="font-extrabold text-royal-400 text-sm mb-1">Verified Monographs</h4>
+                <p class="text-xs text-niili-200/80 leading-relaxed">Aligned with established clinical pharmacology references for safe academic training.</p>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-obsidian-900 border border-niili-800/80">
+                <div class="w-9 h-9 rounded-xl bg-niili-600 text-white flex items-center justify-center mb-3">
+                  <i data-lucide="zap" class="w-5 h-5"></i>
+                </div>
+                <h4 class="font-extrabold text-niili-400 text-sm mb-1">Instant Multi-Index Search</h4>
+                <p class="text-xs text-niili-200/80 leading-relaxed">Cross-references trade names, INN generic names, and active chemical entities simultaneously.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== ADD / EDIT MEDICINE MODAL ==================== -->
+  <div id="medicine-form-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-obsidian-850 rounded-3xl border border-niili-600 shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden my-auto">
+      <!-- Modal Header -->
+      <div class="px-6 py-4 bg-gradient-to-r from-obsidian-950 via-niili-950/90 to-obsidian-900 border-b border-niili-700 text-royal-400 flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2.5">
+          <i data-lucide="file-plus-2" class="w-5 h-5 text-royal-400"></i>
+          <h3 id="medicine-modal-title" class="font-display font-extrabold text-lg text-royal-400">Add New Medicine Monograph</h3>
+        </div>
+        <button onclick="closeMedicineFormModal()" class="p-1.5 rounded-lg text-niili-300 hover:text-white hover:bg-niili-900/60">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Modal Form Body -->
+      <form id="medicine-crud-form" onsubmit="handleSaveMedicine(event)" class="p-6 overflow-y-auto space-y-4">
+        <input type="hidden" id="form-med-id" />
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-extrabold text-royal-400 uppercase mb-1">1. Brand Name *</label>
+            <input type="text" id="form-brand" required placeholder="e.g., Augmentin" class="w-full px-3.5 py-2.5 rounded-xl bg-obsidian-900 border border-niili-800 text-royal-100 placeholder-niili-400/50 text-sm focus:outline-none focus:border-royal-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-extrabold text-royal-400 uppercase mb-1">2. Generic Name *</label>
+            <input type="text" id="form-generic" required placeholder="e.g., Amoxicillin / Clavulanate Potassium" class="w-full px-3.5 py-2.5 rounded-xl bg-obsidian-900 border border-niili-800 text-royal-100 placeholder-niili-400/50 text-sm focus:outline-none focus:border-royal-500" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-extrabold text-royal-400 uppercase mb-1">3. Active Ingredient *</label>
+            <input type="text" id="form-ingredient" required placeholder="e.g., Amoxicillin trihydrate + Clavulanate" class="w-full px-3.5 py-2.5 rounded-xl bg-obsidian-900 border border-niili-800 text-royal-100 placeholder-niili-400/50 text-sm focus:outline-none focus:border-royal-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-extrabold text-royal-400 uppercase mb-1">Therapeutic Category *</label>
+            <select id="form-category" required class="w-full px-3.5 py-2.5 rounded-xl bg-obsidian-900 border border-niili-800 text-royal-100 text-sm focus:outline-none focus:border-royal-500">
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs font-extrabold text-royal-400 uppercase mb-1">4. Drug Class *</label>
+            <input type="text" id="form-class" required placeholder="e.g., Beta-lactam Antibiotic" class="w-full px-3.5 py-2.5 rounded-xl bg-obsidian-900 border border-niili-800 text-royal-100 placeholder-niili-400/50 text-sm focus:outline-none focus:border-royal-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-extrabold text-royal-400 uppercase mb-1">5. Pharmaceutical Form *</label>
+            <input type="text" id="form-form" required placeholder="e.g., Film-coated tablets" class="w-full px-3.5 py-2.5 rounded-xl bg-obsidian-900 border border-niili-800 text-royal-100 placeholder-niili-400/50 text-sm focus:outline-none focus:border-royal-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-extrabold text-royal-400 uppercase mb-1">6. Available Strengths *</label>
+            <input type="text" id="form-strengths" required placeholder="e.g., 625 mg, 1000 mg" class="w-full px-3.5 py-2.5 rounded-xl bg-obsidian-900 border border-niili-800 text-royal-100 placeholder-niili-400/50 text-sm focus:outline-none focus:border-royal-500" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-extrabold text-royal-400 uppercase mb-1">7. Indications and Uses *</label>
+          <textarea id="form-indications" rows="2" required placeholder="Clinical therapeutic uses and approved indications..." class="w-full px-3.5 py-2 rounded-xl bg-obsidian-900 border border-niili-800 text-royal-100 placeholder-niili-400/50 text-sm focus:outline-none focus:border-royal-500"></textarea>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-extrabold text-royal-400 uppercase mb-1">8. Contraindications *</label>
+            <textarea id="form-contraindications" rows="2" required placeholder="Conditions where the drug must not be used..." class="w-full px-3.5 py-2 rounded-xl bg-obsidian-900 border border-niili-800 text-royal-100 placeholder-niili-400/50 text-sm focus:outline-none focus:border-royal-500"></textarea>
+          </div>
+          <div>
+            <label class="block text-xs font-extrabold text-royal-400 uppercase mb-1">9. Side Effects *</label>
+            <textarea id="form-sideEffects" rows="2" required placeholder="Common and notable adverse drug reactions..." class="w-full px-3.5 py-2 rounded-xl bg-obsidian-900 border border-niili-800 text-royal-100 placeholder-niili-400/50 text-sm focus:outline-none focus:border-royal-500"></textarea>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-extrabold text-royal-400 uppercase mb-1">10. Warnings and Precautions *</label>
+            <textarea id="form-warnings" rows="2" required placeholder="Renal/hepatic dosing alerts, pregnancy, interactions..." class="w-full px-3.5 py-2 rounded-xl bg-obsidian-900 border border-niili-800 text-royal-100 placeholder-niili-400/50 text-sm focus:outline-none focus:border-royal-500"></textarea>
+          </div>
+          <div>
+            <label class="block text-xs font-extrabold text-royal-400 uppercase mb-1">11. Storage Conditions *</label>
+            <textarea id="form-storage" rows="2" required placeholder="e.g., Store below 25°C in a dry place protected from moisture." class="w-full px-3.5 py-2 rounded-xl bg-obsidian-900 border border-niili-800 text-royal-100 placeholder-niili-400/50 text-sm focus:outline-none focus:border-royal-500"></textarea>
+          </div>
+        </div>
+
+        <!-- Modal Footer Actions -->
+        <div class="pt-4 border-t border-niili-800/70 flex items-center justify-end gap-3">
+          <button type="button" onclick="closeMedicineFormModal()" class="px-5 py-2.5 rounded-xl border border-niili-700 text-niili-200 text-sm font-bold hover:bg-niili-950/70">
+            Cancel
+          </button>
+          <button type="submit" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-royal-600 to-niili-600 hover:from-royal-500 hover:to-niili-500 text-white text-sm font-bold shadow-md border border-royal-400/50">
+            Save Medicine Monograph
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== CUSTOM CONFIRMATION DIALOG ==================== -->
+  <div id="confirm-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-obsidian-850 rounded-2xl border border-niili-600 shadow-2xl max-w-sm w-full p-6 text-center">
+      <div class="w-12 h-12 rounded-full bg-niili-950 border border-royal-500 text-royal-400 flex items-center justify-center mx-auto mb-4">
+        <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+      </div>
+      <h3 id="confirm-title" class="font-display font-extrabold text-lg text-royal-400">Confirm Action</h3>
+      <p id="confirm-message" class="text-sm text-niili-200 mt-1.5 mb-6">Are you sure you want to proceed?</p>
+      <div class="flex items-center justify-center gap-3">
+        <button onclick="closeConfirmModal()" class="flex-1 py-2.5 rounded-xl border border-niili-700 text-niili-200 text-sm font-bold hover:bg-niili-950/70">
+          Cancel
+        </button>
+        <button id="confirm-yes-btn" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-royal-600 to-niili-600 hover:from-royal-500 hover:to-niili-500 text-white text-sm font-bold shadow-sm border border-royal-400/50">
+          Confirm
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TOAST NOTIFICATION CONTAINER ==================== -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="bg-obsidian-950 text-niili-200 border-t border-niili-900/80 mt-auto no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b border-niili-900/60">
+        <div>
+          <div class="flex items-center gap-2.5 mb-3">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-royal-600 to-niili-600 flex items-center justify-center text-white">
+              <i data-lucide="pill" class="w-4 h-4"></i>
+            </div>
+            <span class="font-display font-extrabold text-lg text-royal-400">Pharma <span class="text-niili-400">Guide</span></span>
+          </div>
+          <p class="text-xs text-niili-300/80 leading-relaxed">
+            A smart pharmaceutical platform designed to make verified drug information organized and accessible for pharmacy students and healthcare professionals.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="text-royal-400 font-extrabold text-sm mb-3">Platform Navigation</h4>
+          <ul class="space-y-2 text-xs text-niili-300/85">
+            <li><button onclick="navigateTo('home')" class="hover:text-royal-400 font-semibold transition-colors">Home & Quick Search</button></li>
+            <li><button onclick="navigateTo('explorer')" class="hover:text-royal-400 font-semibold transition-colors">Medicine Explorer & Categories</button></li>
+            <li><button onclick="navigateTo('admin')" class="hover:text-royal-400 font-semibold transition-colors">Administrator Dashboard</button></li>
+            <li><button onclick="navigateTo('about')" class="hover:text-royal-400 font-semibold transition-colors">About Us & Developer Profile</button></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-royal-400 font-extrabold text-sm mb-3">Academic Attribution</h4>
+          <p class="text-xs text-niili-300 font-extrabold">Developed by: Carlos Michel Adel</p>
+          <p class="text-xs text-royal-300 mt-1 font-semibold">Faculty of Pharmacy — Sohag University</p>
+          <p class="text-[11px] text-niili-300/70 mt-3 leading-relaxed">
+            <strong class="text-royal-400">Disclaimer:</strong> Content is compiled from standard pharmacological monographs for educational purposes only and does not replace professional medical advice.
+          </p>
+        </div>
+      </div>
+
+      <div class="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-niili-400/80 gap-2">
+        <p>© 2026 Pharma Guide • Sohag University Faculty of Pharmacy. All rights reserved.</p>
+        <p id="storage-mode-badge" class="text-royal-400 font-bold">Database Engine: LocalStorage Active</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== APPLICATION LOGIC & LOCALSTORAGE DATABASE ==================== -->
+  <script>
+    // -------------------- LOCALSTORAGE KEYS --------------------
+    const STORAGE_KEYS = {
+      MEDICINES: "pharma_guide_medicines_v1",
+      CATEGORIES: "pharma_guide_categories_v1"
+    };
+
+    // -------------------- VERIFIED CLINICAL SEED DATA --------------------
+    const DEFAULT_CATEGORIES = [
+      "Antibiotics",
+      "Analgesics",
+      "Antihypertensives",
+      "Antidiabetics",
+      "Antihistamines",
+      "Vitamins and Supplements",
+      "Gastrointestinal Drugs"
+    ];
+
+    const CATEGORY_META = {
+      "Antibiotics": { icon: "shield-plus", color: "bg-royal-950 text-royal-400 border-royal-700" },
+      "Analgesics": { icon: "activity", color: "bg-niili-950 text-niili-400 border-niili-700" },
+      "Antihypertensives": { icon: "heart-pulse", color: "bg-royal-950 text-royal-300 border-niili-700" },
+      "Antidiabetics": { icon: "droplets", color: "bg-niili-950 text-royal-400 border-niili-700" },
+      "Antihistamines": { icon: "wind", color: "bg-royal-950 text-niili-300 border-royal-800" },
+      "Vitamins and Supplements": { icon: "sun", color: "bg-niili-950 text-royal-300 border-niili-700" },
+      "Gastrointestinal Drugs": { icon: "stethoscope", color: "bg-royal-950 text-niili-400 border-royal-700" }
+    };
+
+    const INITIAL_MEDICINES = [
+      {
+        id: "med-augmentin",
+        brandName: "Augmentin",
+        genericName: "Amoxicillin / Clavulanate Potassium",
+        activeIngredient: "Amoxicillin trihydrate + Clavulanate potassium",
+        category: "Antibiotics",
+        drugClass: "Penicillin-class Beta-lactam / Beta-lactamase Inhibitor",
+        pharmaceuticalForm: "Film-coated tablets / Oral suspension",
+        availableStrengths: "375 mg, 625 mg, 1000 mg tablets; 156 mg/5mL, 312 mg/5mL, 457 mg/5mL suspension",
+        indications: "Treatment of bacterial infections including acute bacterial sinusitis, community-acquired pneumonia, otitis media, urinary tract infections, and skin/soft tissue infections caused by beta-lactamase-producing organisms.",
+        contraindications: "History of severe hypersensitivity (anaphylaxis) to penicillins or beta-lactams; history of cholestatic jaundice or hepatic dysfunction associated with previous amoxicillin-clavulanate therapy.",
+        sideEffects: "Diarrhea, nausea, vomiting, mucocutaneous candidiasis, skin rash, and transient elevations in hepatic transaminases.",
+        warnings: "Administer at the start of a meal to minimize gastrointestinal intolerance and enhance clavulanate absorption. Adjust dose in severe renal impairment (CrCl < 30 mL/min). Monitor hepatic function during prolonged therapy.",
+        storageConditions: "Store tablets below 25°C in original moisture-proof packaging. Reconstituted oral suspension must be refrigerated (2°C–8°C) and discarded after 7–10 days."
+      },
+      {
+        id: "med-panadol",
+        brandName: "Panadol",
+        genericName: "Paracetamol (Acetaminophen)",
+        activeIngredient: "Paracetamol",
+        category: "Analgesics",
+        drugClass: "Non-opioid Analgesic and Antipyretic",
+        pharmaceuticalForm: "Film-coated tablets / Oral suspension",
+        availableStrengths: "500 mg, 1000 mg tablets; 120 mg/5mL, 250 mg/5mL suspension",
+        indications: "Symptomatic relief of mild-to-moderate pain (headache, dental pain, musculoskeletal pain, dysmenorrhea) and reduction of fever.",
+        contraindications: "Known hypersensitivity to paracetamol; severe active hepatocellular insufficiency or severe hepatic failure.",
+        sideEffects: "Rare at therapeutic doses; occasional hypersensitivity skin reactions, thrombocytopenia, or hepatotoxicity upon overdose.",
+        warnings: "Do not exceed the maximum adult daily dose of 4,000 mg (4 g) in 24 hours. Avoid concurrent use with other paracetamol-containing combination products. Use with caution in chronic alcoholism or malnutrition.",
+        storageConditions: "Store at room temperature below 25°C–30°C in a dry place protected from direct light."
+      },
+      {
+        id: "med-concor",
+        brandName: "Concor",
+        genericName: "Bisoprolol Fumarate",
+        activeIngredient: "Bisoprolol fumarate",
+        category: "Antihypertensives",
+        drugClass: "Cardioselective Beta-1 Adrenergic Receptor Blocker",
+        pharmaceuticalForm: "Film-coated tablets",
+        availableStrengths: "2.5 mg, 5 mg, 10 mg",
+        indications: "Management of essential hypertension, chronic stable angina pectoris, and stable chronic systolic heart failure (as an adjunct to ACE inhibitors and diuretics).",
+        contraindications: "Acute decompensated heart failure, cardiogenic shock, second- or third-degree AV block (without pacemaker), sick sinus syndrome, symptomatic bradycardia, and severe bronchial asthma.",
+        sideEffects: "Bradycardia, fatigue, dizziness, cold extremities, hypotension, headache, and gastrointestinal disturbances.",
+        warnings: "Never discontinue abruptly in patients with coronary artery disease, as sudden withdrawal may precipitate severe angina exacerbation or myocardial infarction. May mask tachycardia symptoms of hypoglycemia in diabetic patients.",
+        storageConditions: "Store below 25°C in the original blister pack to protect from moisture."
+      },
+      {
+        id: "med-glucophage",
+        brandName: "Glucophage",
+        genericName: "Metformin Hydrochloride",
+        activeIngredient: "Metformin hydrochloride",
+        category: "Antidiabetics",
+        drugClass: "Biguanide Antihyperglycemic Agent",
+        pharmaceuticalForm: "Film-coated tablets / Extended-release tablets",
+        availableStrengths: "500 mg, 850 mg, 1000 mg",
+        indications: "First-line pharmacological therapy for Type 2 Diabetes Mellitus to improve glycemic control alongside diet and exercise; also used off-label in polycystic ovary syndrome (PCOS).",
+        contraindications: "Severe renal impairment (eGFR < 30 mL/min/1.73 m²), acute or chronic metabolic acidosis (including diabetic ketoacidosis), severe hepatic disease, and acute tissue hypoxia.",
+        sideEffects: "Gastrointestinal symptoms (diarrhea, nausea, abdominal bloating, metallic taste), and vitamin B12 malabsorption with long-term use.",
+        warnings: "Temporarily discontinue prior to or at the time of iodinated contrast imaging procedures in patients with reduced renal function due to risk of lactic acidosis. Take with meals to reduce GI upset.",
+        storageConditions: "Store at controlled room temperature (15°C–30°C) in a tightly closed container."
+      },
+      {
+        id: "med-zyrtec",
+        brandName: "Zyrtec",
+        genericName: "Cetirizine Dihydrochloride",
+        activeIngredient: "Cetirizine dihydrochloride",
+        category: "Antihistamines",
+        drugClass: "Second-Generation Selective Peripheral H1-Receptor Antagonist",
+        pharmaceuticalForm: "Film-coated tablets / Oral drops / Syrup",
+        availableStrengths: "10 mg tablets; 1 mg/mL syrup; 10 mg/mL oral drops",
+        indications: "Relief of nasal and ocular symptoms of seasonal and perennial allergic rhinitis, and treatment of chronic idiopathic urticaria.",
+        contraindications: "Hypersensitivity to cetirizine, hydroxyzine, or any piperazine derivatives; end-stage renal disease (CrCl < 10 mL/min).",
+        sideEffects: "Mild somnolence/drowsiness, dry mouth, fatigue, headache, and pharyngitis.",
+        warnings: "Although minimally sedating, caution is advised when driving or operating machinery until individual response is known. Avoid concurrent alcohol or CNS depressants. Reduce dose in moderate-to-severe renal impairment.",
+        storageConditions: "Store below 25°C–30°C; keep oral liquid tightly capped."
+      },
+      {
+        id: "med-vitamind3",
+        brandName: "Vidrop / Cholecalciferol D3",
+        genericName: "Cholecalciferol (Vitamin D3)",
+        activeIngredient: "Cholecalciferol",
+        category: "Vitamins and Supplements",
+        drugClass: "Fat-Soluble Secosteroid Vitamin / Calcium Homeostasis Regulator",
+        pharmaceuticalForm: "Softgel capsules / Oral drops",
+        availableStrengths: "1,000 IU, 5,000 IU, 50,000 IU capsules; 2,800 IU/mL drops",
+        indications: "Prevention and treatment of Vitamin D deficiency, rickets, osteomalacia, and adjunct therapy in osteoporosis management.",
+        contraindications: "Hypercalcemia, hypervitaminosis D, nephrolithiasis (calcium-containing kidney stones), and severe renal osteodystrophy with hyperphosphatemia.",
+        sideEffects: "Rare at recommended doses; excessive intake leads to hypercalcemia manifestations (nausea, polyuria, polydipsia, constipation, vascular calcification).",
+        warnings: "Monitor serum 25-hydroxyvitamin D and calcium levels during high-dose replacement therapy. Administer with a meal containing fat for optimal intestinal absorption.",
+        storageConditions: "Store below 25°C in a cool, dry place away from direct sunlight."
+      },
+      {
+        id: "med-nexium",
+        brandName: "Nexium",
+        genericName: "Esomeprazole Magnesium",
+        activeIngredient: "Esomeprazole magnesium trihydrate",
+        category: "Gastrointestinal Drugs",
+        drugClass: "Proton Pump Inhibitor (PPI)",
+        pharmaceuticalForm: "Enteric-coated tablets / Gastro-resistant capsules",
+        availableStrengths: "20 mg, 40 mg",
+        indications: "Treatment of gastroesophageal reflux disease (GERD), erosive esophagitis, Zollinger-Ellison syndrome, eradication of Helicobacter pylori (in combination therapy), and prevention of NSAID-associated gastric ulcers.",
+        contraindications: "Known hypersensitivity to esomeprazole or substituted benzimidazoles; co-administration with rilpivirine-containing products.",
+        sideEffects: "Headache, abdominal pain, diarrhea, flatulence, nausea, and constipation.",
+        warnings: "Administer at least 30–60 minutes before a meal; swallow whole without crushing or chewing enteric pellets. Long-term use (>1 year) may increase risk of hypomagnesemia, vitamin B12 deficiency, and osteoporotic fractures.",
+        storageConditions: "Store below 25°C in the original blister pack protected from moisture."
+      },
+      {
+        id: "med-zithromax",
+        brandName: "Zithromax",
+        genericName: "Azithromycin Dihydrate",
+        activeIngredient: "Azithromycin",
+        category: "Antibiotics",
+        drugClass: "Macrolide Antibiotic",
+        pharmaceuticalForm: "Film-coated tablets / Capsules / Powder for oral suspension",
+        availableStrengths: "250 mg, 500 mg tablets; 200 mg/5mL suspension",
+        indications: "Acute bacterial exacerbations of chronic bronchitis, community-acquired pneumonia, streptococcal pharyngitis/tonsillitis, uncomplicated skin infections, and non-gonococcal urethritis/cervicitis.",
+        contraindications: "Hypersensitivity to azithromycin, erythromycin, or any macrolide/ketolide antibiotic; history of cholestatic jaundice or hepatic dysfunction associated with prior azithromycin use.",
+        sideEffects: "Diarrhea, nausea, abdominal pain, loose stools, and rare QT-interval prolongation.",
+        warnings: "Use with caution in patients with known QT prolongation, bradyarrhythmias, or concurrent Class IA/III antiarrhythmics. Separate administration from aluminum- or magnesium-containing antacids.",
+        storageConditions: "Store tablets at 15°C–30°C. Reconstituted suspension may be stored at room temperature (below 30°C) for up to 10 days."
+      },
+      {
+        id: "med-brufen",
+        brandName: "Brufen",
+        genericName: "Ibuprofen",
+        activeIngredient: "Ibuprofen",
+        category: "Analgesics",
+        drugClass: "Non-Steroidal Anti-Inflammatory Drug (NSAID)",
+        pharmaceuticalForm: "Film-coated tablets / Oral suspension",
+        availableStrengths: "200 mg, 400 mg, 600 mg tablets; 100 mg/5mL suspension",
+        indications: "Management of inflammatory pain, osteoarthritis, rheumatoid arthritis, primary dysmenorrhea, dental pain, and fever reduction.",
+        contraindications: "Active peptic ulceration or GI bleeding, history of asthma/urticaria precipitated by aspirin or other NSAIDs, severe heart failure, severe renal/hepatic failure, and third trimester of pregnancy.",
+        sideEffects: "Dyspepsia, heartburn, epigastric pain, nausea, fluid retention, hypertension, and increased risk of GI mucosal ulceration.",
+        warnings: "Administer with food or milk to reduce gastrointestinal irritation. Use the lowest effective dose for the shortest duration due to cardiovascular thrombotic and renal risks.",
+        storageConditions: "Store below 25°C in a dry place protected from light."
+      },
+      {
+        id: "med-norvasc",
+        brandName: "Norvasc",
+        genericName: "Amlodipine Besylate",
+        activeIngredient: "Amlodipine besylate",
+        category: "Antihypertensives",
+        drugClass: "Dihydropyridine Calcium Channel Blocker",
+        pharmaceuticalForm: "Tablets",
+        availableStrengths: "5 mg, 10 mg",
+        indications: "Treatment of essential hypertension and chronic stable or vasospastic (Prinzmetal's) angina pectoris.",
+        contraindications: "Known hypersensitivity to dihydropyridines, severe hypotension, cardiogenic shock, and clinically significant aortic stenosis.",
+        sideEffects: "Dose-dependent peripheral ankle edema, flushing, palpitations, dizziness, and fatigue.",
+        warnings: "Initiate at lower doses (2.5 mg) in elderly patients or those with hepatic impairment due to reduced clearance. Peripheral edema results from arteriolar vasodilation rather than fluid overload.",
+        storageConditions: "Store at controlled room temperature (15°C–30°C) protected from light."
+      }
+    ];
+
+    // -------------------- APPLICATION STATE --------------------
+    let state = {
+      medicines: [],
+      categories: [...DEFAULT_CATEGORIES],
+      currentView: "home",
+      selectedMedicineId: null,
+      isAdminAuthenticated: false
+    };
+
+    // -------------------- LOCALSTORAGE DATABASE ENGINE --------------------
+    function initDatabase() {
+      try {
+        const savedMeds = localStorage.getItem(STORAGE_KEYS.MEDICINES);
+        const savedCats = localStorage.getItem(STORAGE_KEYS.CATEGORIES);
+
+        if (savedMeds) {
+          state.medicines = JSON.parse(savedMeds);
+        } else {
+          state.medicines = JSON.parse(JSON.stringify(INITIAL_MEDICINES));
+          localStorage.setItem(STORAGE_KEYS.MEDICINES, JSON.stringify(state.medicines));
+        }
+
+        if (savedCats) {
+          state.categories = JSON.parse(savedCats);
+        } else {
+          state.categories = [...DEFAULT_CATEGORIES];
+          localStorage.setItem(STORAGE_KEYS.CATEGORIES, JSON.stringify(state.categories));
+        }
+      } catch (err) {
+        console.warn("LocalStorage unavailable, using session memory:", err);
+        state.medicines = JSON.parse(JSON.stringify(INITIAL_MEDICINES));
+        state.categories = [...DEFAULT_CATEGORIES];
+      }
+      refreshAllViews();
+    }
+
+    function saveDatabaseToStorage() {
+      try {
+        localStorage.setItem(STORAGE_KEYS.MEDICINES, JSON.stringify(state.medicines));
+        localStorage.setItem(STORAGE_KEYS.CATEGORIES, JSON.stringify(state.categories));
+      } catch (err) {
+        console.error("Failed to save to localStorage:", err);
+      }
+    }
+
+    function persistMedicine(medObj) {
+      const idx = state.medicines.findIndex((m) => m.id === medObj.id);
+      if (idx >= 0) {
+        state.medicines[idx] = medObj;
+      } else {
+        state.medicines.unshift(medObj);
+      }
+      saveDatabaseToStorage();
+      refreshAllViews();
+    }
+
+    function removeMedicineById(id) {
+      state.medicines = state.medicines.filter((m) => m.id !== id);
+      saveDatabaseToStorage();
+      refreshAllViews();
+    }
+
+    function persistCategory(catName) {
+      if (!state.categories.includes(catName)) {
+        state.categories.push(catName);
+        saveDatabaseToStorage();
+        refreshAllViews();
+      }
+    }
+
+    function removeCategoryByName(catName) {
+      state.categories = state.categories.filter((c) => c !== catName);
+      saveDatabaseToStorage();
+      refreshAllViews();
+    }
+
+    // -------------------- NAVIGATION & VIEW ROUTER --------------------
+    window.navigateTo = function (viewName, param = null) {
+      state.currentView = viewName;
+
+      document.querySelectorAll(".view-section").forEach((sec) => sec.classList.add("hidden"));
+
+      const target = document.getElementById(`view-${viewName}`);
+      if (target) target.classList.remove("hidden");
+
+      document.querySelectorAll(".nav-btn").forEach((btn) => {
+        const isTarget = btn.getAttribute("data-nav") === viewName;
+        if (btn.id === "header-admin-btn") {
+          btn.classList.toggle("ring-2", isTarget);
+          btn.classList.toggle("ring-royal-300", isTarget);
+        } else {
+          btn.classList.toggle("bg-niili-950", isTarget);
+          btn.classList.toggle("text-royal-300", isTarget);
+          btn.classList.toggle("border", isTarget);
+          btn.classList.toggle("border-niili-700", isTarget);
+          btn.classList.toggle("text-niili-300", !isTarget);
+          btn.classList.toggle("hover:bg-niili-950/60", !isTarget);
+          btn.classList.toggle("hover:text-royal-300", !isTarget);
+        }
+      });
+
+      if (viewName === "explorer") {
+        if (param && param.category) {
+          document.getElementById("explorer-category-select").value = param.category;
+        }
+        if (param && typeof param.query === "string") {
+          document.getElementById("explorer-search-input").value = param.query;
+        }
+        renderExplorer();
+      } else if (viewName === "details" && param) {
+        state.selectedMedicineId = param;
+        renderMedicineDetails(param);
+      } else if (viewName === "admin") {
+        renderAdminView();
+      } else if (viewName === "home") {
+        renderHome();
+      }
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      lucide.createIcons();
+    };
+
+    window.toggleMobileMenu = function () {
+      const menu = document.getElementById("mobile-menu");
+      menu.classList.toggle("hidden");
+    };
+
+    function refreshAllViews() {
+      populateCategoryDropdowns();
+      populateFormFilterDropdown();
+      renderHome();
+      renderExplorer();
+      if (state.currentView === "details" && state.selectedMedicineId) {
+        renderMedicineDetails(state.selectedMedicineId);
+      }
+      if (state.currentView === "admin") {
+        renderAdminView();
+      }
+      lucide.createIcons();
+    }
+
+    // -------------------- HOME PAGE RENDERING & HERO SEARCH --------------------
+    function renderHome() {
+      const totalBadge = document.getElementById("home-total-badge");
+      if (totalBadge) {
+        totalBadge.textContent = `${state.medicines.length} Verified Monographs`;
+      }
+
+      const catGrid = document.getElementById("home-categories-grid");
+      if (catGrid) {
+        catGrid.innerHTML = state.categories
+          .map((cat) => {
+            const count = state.medicines.filter((m) => m.category === cat).length;
+            const meta = CATEGORY_META[cat] || { icon: "pill", color: "bg-royal-950 text-royal-400 border-royal-700" };
+            return `
+              <button onclick="navigateTo('explorer', { category: '${escapeHtml(cat)}' })"
+                class="group bg-obsidian-850 rounded-2xl border border-niili-800/80 hover:border-royal-500 p-4 text-left shadow-md hover:shadow-niili-950/60 transition-all flex items-center justify-between">
+                <div class="flex items-center gap-3.5">
+                  <div class="w-11 h-11 rounded-xl border ${meta.color} flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                    <i data-lucide="${meta.icon}" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-display font-extrabold text-sm text-royal-300 group-hover:text-white transition-colors">${escapeHtml(cat)}</h3>
+                    <p class="text-xs text-niili-300/80 mt-0.5">${count} ${count === 1 ? "Medicine" : "Medicines"}</p>
+                  </div>
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-niili-600 group-hover:text-royal-400 group-hover:translate-x-0.5 transition-all"></i>
+              </button>
+            `;
+          })
+          .join("");
+      }
+
+      const featuredGrid = document.getElementById("home-featured-grid");
+      if (featuredGrid) {
+        const featuredList = state.medicines.slice(0, 6);
+        featuredGrid.innerHTML = featuredList.map((med) => createMedicineCardHTML(med)).join("");
+      }
+    }
+
+    window.handleHeroSearchInput = function (val) {
+      const clearBtn = document.getElementById("hero-clear-btn");
+      const dropdown = document.getElementById("hero-instant-results");
+      const query = val.trim().toLowerCase();
+
+      if (query.length > 0) {
+        clearBtn.classList.remove("hidden");
+      } else {
+        clearBtn.classList.add("hidden");
+        dropdown.classList.add("hidden");
+        return;
+      }
+
+      const matches = state.medicines.filter(
+        (m) =>
+          m.brandName.toLowerCase().includes(query) ||
+          m.genericName.toLowerCase().includes(query) ||
+          m.activeIngredient.toLowerCase().includes(query)
+      );
+
+      if (matches.length === 0) {
+        dropdown.innerHTML = `
+          <div class="p-4 text-sm text-niili-300 text-center">
+            No immediate matches for "<strong class="text-royal-400">${escapeHtml(val)}</strong>". Press Enter to search full explorer.
+          </div>
+        `;
+      } else {
+        dropdown.innerHTML = matches
+          .slice(0, 5)
+          .map(
+            (m) => `
+            <button onclick="openMonograph('${m.id}')" class="w-full px-4 py-3 hover:bg-niili-950/80 border-b border-niili-800/70 last:border-none flex items-center justify-between text-left transition-colors">
+              <div>
+                <p class="font-extrabold text-sm text-royal-400">${escapeHtml(m.brandName)} <span class="font-normal text-niili-200">(${escapeHtml(m.genericName)})</span></p>
+                <p class="text-xs text-niili-400 font-semibold mt-0.5">Active: ${escapeHtml(m.activeIngredient)}</p>
+              </div>
+              <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-niili-950 border border-niili-700 text-royal-300 shrink-0 ml-2">
+                ${escapeHtml(m.category)}
+              </span>
+            </button>
+          `
+          )
+          .join("");
+      }
+      dropdown.classList.remove("hidden");
+    };
+
+    window.clearHeroSearch = function () {
+      document.getElementById("hero-search-input").value = "";
+      document.getElementById("hero-clear-btn").classList.add("hidden");
+      document.getElementById("hero-instant-results").classList.add("hidden");
+    };
+
+    window.executeHeroSearch = function () {
+      const q = document.getElementById("hero-search-input").value.trim();
+      document.getElementById("hero-instant-results").classList.add("hidden");
+      navigateTo("explorer", { query: q });
+    };
+
+    window.quickSearchTerm = function (term) {
+      navigateTo("explorer", { query: term });
+    };
+
+    document.addEventListener("click", (e) => {
+      const dropdown = document.getElementById("hero-instant-results");
+      const input = document.getElementById("hero-search-input");
+      if (dropdown && input && !dropdown.contains(e.target) && e.target !== input) {
+        dropdown.classList.add("hidden");
+      }
+    });
+
+    // -------------------- MEDICINE EXPLORER --------------------
+    function populateCategoryDropdowns() {
+      const explorerSelect = document.getElementById("explorer-category-select");
+      const formSelect = document.getElementById("form-category");
+      const currentExplorerVal = explorerSelect ? explorerSelect.value : "ALL";
+
+      if (explorerSelect) {
+        explorerSelect.innerHTML =
+          `<option value="ALL">All Categories (${state.medicines.length})</option>` +
+          state.categories
+            .map((c) => {
+              const cnt = state.medicines.filter((m) => m.category === c).length;
+              return `<option value="${escapeHtml(c)}">${escapeHtml(c)} (${cnt})</option>`;
+            })
+            .join("");
+        explorerSelect.value = state.categories.includes(currentExplorerVal) || currentExplorerVal === "ALL" ? currentExplorerVal : "ALL";
+      }
+
+      if (formSelect) {
+        formSelect.innerHTML = state.categories
+          .map((c) => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`)
+          .join("");
+      }
+    }
+
+    function populateFormFilterDropdown() {
+      const formFilter = document.getElementById("explorer-form-select");
+      if (!formFilter) return;
+      const currentVal = formFilter.value;
+      const uniqueForms = [...new Set(state.medicines.map((m) => m.pharmaceuticalForm.split("/")[0].trim()))];
+
+      formFilter.innerHTML =
+        `<option value="ALL">All Dosage Forms</option>` +
+        uniqueForms.map((f) => `<option value="${escapeHtml(f)}">${escapeHtml(f)}</option>`).join("");
+
+      if (uniqueForms.includes(currentVal)) formFilter.value = currentVal;
+    }
+
+    window.renderExplorer = function () {
+      const searchInput = document.getElementById("explorer-search-input");
+      const catSelect = document.getElementById("explorer-category-select");
+      const formSelect = document.getElementById("explorer-form-select");
+      const pillsContainer = document.getElementById("explorer-category-pills");
+      const grid = document.getElementById("explorer-results-grid");
+      const emptyState = document.getElementById("explorer-empty-state");
+      const countLabel = document.getElementById("explorer-results-count");
+
+      if (!grid) return;
+
+      const query = (searchInput?.value || "").trim().toLowerCase();
+      const selectedCat = catSelect?.value || "ALL";
+      const selectedForm = formSelect?.value || "ALL";
+
+      if (pillsContainer) {
+        const allPills = ["ALL", ...state.categories];
+        pillsContainer.innerHTML = allPills
+          .map((cat) => {
+            const active = selectedCat === cat;
+            const label = cat === "ALL" ? "All Medicines" : cat;
+            return `
+              <button onclick="selectExplorerCategoryPill('${escapeHtml(cat)}')"
+                class="px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
+                  active
+                    ? "bg-gradient-to-r from-royal-600 to-niili-600 text-white shadow-sm shadow-niili-950/80 border border-royal-400/60"
+                    : "bg-obsidian-900 border border-niili-800/80 text-niili-300 hover:border-royal-400 hover:text-white"
+                }">
+                ${escapeHtml(label)}
+              </button>
+            `;
+          })
+          .join("");
+      }
+
+      const filtered = state.medicines.filter((med) => {
+        const matchesQuery =
+          !query ||
+          med.brandName.toLowerCase().includes(query) ||
+          med.genericName.toLowerCase().includes(query) ||
+          med.activeIngredient.toLowerCase().includes(query) ||
+          med.drugClass.toLowerCase().includes(query);
+
+        const matchesCat = selectedCat === "ALL" || med.category === selectedCat;
+        const matchesForm =
+          selectedForm === "ALL" || med.pharmaceuticalForm.toLowerCase().includes(selectedForm.toLowerCase());
+
+        return matchesQuery && matchesCat && matchesForm;
+      });
+
+      countLabel.textContent = `Showing ${filtered.length} of ${state.medicines.length} verified medicines`;
+
+      if (filtered.length === 0) {
+        grid.innerHTML = "";
+        emptyState.classList.remove("hidden");
+      } else {
+        emptyState.classList.add("hidden");
+        grid.innerHTML = filtered.map((med) => createMedicineCardHTML(med)).join("");
+      }
+      lucide.createIcons();
+    };
+
+    window.selectExplorerCategoryPill = function (cat) {
+      document.getElementById("explorer-category-select").value = cat;
+      renderExplorer();
+    };
+
+    window.resetExplorerFilters = function () {
+      document.getElementById("explorer-search-input").value = "";
+      document.getElementById("explorer-category-select").value = "ALL";
+      document.getElementById("explorer-form-select").value = "ALL";
+      renderExplorer();
+    };
+
+    function createMedicineCardHTML(med) {
+      return `
+        <article class="bg-obsidian-850 rounded-2xl border border-niili-800/80 hover:border-royal-500 shadow-md hover:shadow-xl hover:shadow-niili-950/50 transition-all flex flex-col justify-between p-6 group">
+          <div>
+            <div class="flex items-start justify-between gap-2 mb-3">
+              <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-niili-950 text-royal-300 border border-niili-700">
+                ${escapeHtml(med.category)}
+              </span>
+              <span class="text-[11px] font-semibold text-niili-300/80 flex items-center gap-1">
+                <i data-lucide="tablet" class="w-3.5 h-3.5 text-royal-400"></i>
+                ${escapeHtml(med.pharmaceuticalForm.split("/")[0].trim())}
+              </span>
+            </div>
+
+            <h3 class="font-display font-extrabold text-xl text-royal-400 group-hover:text-white transition-colors">
+              ${escapeHtml(med.brandName)}
+            </h3>
+            <p class="text-sm font-bold text-niili-300 mt-0.5">${escapeHtml(med.genericName)}</p>
+
+            <div class="mt-4 pt-3.5 border-t border-niili-800/60 space-y-2 text-xs">
+              <div class="flex items-start gap-2">
+                <span class="font-extrabold text-royal-400 shrink-0">Active:</span>
+                <span class="text-niili-200 font-medium">${escapeHtml(med.activeIngredient)}</span>
+              </div>
+              <div class="flex items-start gap-2">
+                <span class="font-extrabold text-niili-400 shrink-0">Strengths:</span>
+                <span class="text-niili-200/80 line-clamp-1">${escapeHtml(med.availableStrengths)}</span>
+              </div>
+            </div>
+          </div>
+
+          <button onclick="openMonograph('${med.id}')"
+            class="mt-6 w-full py-2.5 px-4 rounded-xl bg-obsidian-900 group-hover:bg-gradient-to-r group-hover:from-royal-600 group-hover:to-niili-600 text-royal-300 group-hover:text-white border border-niili-700 group-hover:border-royal-400 font-bold text-xs flex items-center justify-center gap-2 transition-all">
+            <span>View Full Monograph</span>
+            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          </button>
+        </article>
+      `;
+    }
+
+    // -------------------- MEDICINE DETAILS (MONOGRAPH) VIEW --------------------
+    window.openMonograph = function (id) {
+      document.getElementById("hero-instant-results")?.classList.add("hidden");
+      navigateTo("details", id);
+    };
+
+    function renderMedicineDetails(id) {
+      const med = state.medicines.find((m) => m.id === id);
+      const container = document.getElementById("monograph-printable");
+      if (!container) return;
+
+      if (!med) {
+        container.innerHTML = `<div class="p-10 text-center text-niili-300">Monograph record not found.</div>`;
+        return;
+      }
+
+      container.innerHTML = `
+        <!-- Monograph Header Banner -->
+        <div class="bg-gradient-to-r from-obsidian-950 via-niili-950/90 to-obsidian-900 border-b border-niili-700/80 p-6 sm:p-10">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-niili-950 border border-royal-500/70 text-royal-300 text-xs font-extrabold">
+              <i data-lucide="tag" class="w-3.5 h-3.5 text-royal-400"></i> ${escapeHtml(med.category)}
+            </span>
+            <span class="text-xs text-niili-300/80 font-mono">PHARMA GUIDE MONOGRAPH • ID: ${escapeHtml(med.id.toUpperCase())}</span>
+          </div>
+
+          <h1 class="font-display font-extrabold text-3xl sm:text-4xl tracking-tight text-royal-400">${escapeHtml(med.brandName)}</h1>
+          <p class="text-lg text-niili-300 font-bold mt-1">${escapeHtml(med.genericName)}</p>
+          <p class="text-xs text-niili-200 mt-3 flex items-center gap-2">
+            <i data-lucide="flask-conical" class="w-4 h-4 text-royal-400"></i>
+            <span>Pharmacological Class: <strong class="text-royal-300">${escapeHtml(med.drugClass)}</strong></span>
+          </p>
+        </div>
+
+        <!-- Key Pharmaceutical Identity Grid (Fields 1 - 6) -->
+        <div class="p-6 sm:p-8 bg-obsidian-900/90 border-b border-niili-800/70">
+          <h2 class="text-xs font-extrabold uppercase tracking-wider text-royal-400 mb-4">Pharmaceutical Identification</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="bg-obsidian-850 p-4 rounded-2xl border border-niili-800/80">
+              <span class="text-[11px] font-extrabold uppercase text-niili-400 block">1. Brand Name</span>
+              <span class="font-extrabold text-royal-400 text-sm mt-1 block">${escapeHtml(med.brandName)}</span>
+            </div>
+            <div class="bg-obsidian-850 p-4 rounded-2xl border border-niili-800/80">
+              <span class="text-[11px] font-extrabold uppercase text-niili-400 block">2. Generic Name</span>
+              <span class="font-bold text-niili-100 text-sm mt-1 block">${escapeHtml(med.genericName)}</span>
+            </div>
+            <div class="bg-obsidian-850 p-4 rounded-2xl border border-royal-500/70">
+              <span class="text-[11px] font-extrabold uppercase text-royal-400 block">3. Active Ingredient</span>
+              <span class="font-bold text-royal-200 text-sm mt-1 block">${escapeHtml(med.activeIngredient)}</span>
+            </div>
+            <div class="bg-obsidian-850 p-4 rounded-2xl border border-niili-800/80">
+              <span class="text-[11px] font-extrabold uppercase text-niili-400 block">4. Drug Class</span>
+              <span class="font-semibold text-niili-100 text-sm mt-1 block">${escapeHtml(med.drugClass)}</span>
+            </div>
+            <div class="bg-obsidian-850 p-4 rounded-2xl border border-niili-800/80">
+              <span class="text-[11px] font-extrabold uppercase text-niili-400 block">5. Pharmaceutical Form</span>
+              <span class="font-semibold text-niili-100 text-sm mt-1 block">${escapeHtml(med.pharmaceuticalForm)}</span>
+            </div>
+            <div class="bg-obsidian-850 p-4 rounded-2xl border border-niili-800/80">
+              <span class="text-[11px] font-extrabold uppercase text-niili-400 block">6. Available Strengths</span>
+              <span class="font-semibold text-niili-100 text-sm mt-1 block">${escapeHtml(med.availableStrengths)}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Detailed Clinical Sections (Fields 7 - 11) -->
+        <div class="p-6 sm:p-8 space-y-6">
+          <!-- 7. Indications -->
+          <div class="rounded-2xl border border-niili-800/80 bg-obsidian-900/70 p-5">
+            <div class="flex items-center gap-2.5 mb-2">
+              <div class="w-8 h-8 rounded-lg bg-royal-950 border border-royal-700 text-royal-400 flex items-center justify-center">
+                <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+              </div>
+              <h3 class="font-display font-extrabold text-base text-royal-400">7. Indications and Clinical Uses</h3>
+            </div>
+            <p class="text-sm text-niili-200 leading-relaxed pl-10">${escapeHtml(med.indications)}</p>
+          </div>
+
+          <!-- 8. Contraindications -->
+          <div class="rounded-2xl border border-royal-500/80 bg-niili-950/60 p-5">
+            <div class="flex items-center gap-2.5 mb-2">
+              <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-royal-600 to-niili-600 text-white flex items-center justify-center">
+                <i data-lucide="ban" class="w-4 h-4"></i>
+              </div>
+              <h3 class="font-display font-extrabold text-base text-royal-300">8. Contraindications</h3>
+            </div>
+            <p class="text-sm text-royal-100 leading-relaxed pl-10">${escapeHtml(med.contraindications)}</p>
+          </div>
+
+          <!-- 9. Side Effects -->
+          <div class="rounded-2xl border border-niili-800/80 bg-obsidian-900/70 p-5">
+            <div class="flex items-center gap-2.5 mb-2">
+              <div class="w-8 h-8 rounded-lg bg-niili-950 border border-niili-700 text-niili-400 flex items-center justify-center">
+                <i data-lucide="alert-circle" class="w-4 h-4"></i>
+              </div>
+              <h3 class="font-display font-extrabold text-base text-royal-400">9. Side Effects & Adverse Reactions</h3>
+            </div>
+            <p class="text-sm text-niili-200 leading-relaxed pl-10">${escapeHtml(med.sideEffects)}</p>
+          </div>
+
+          <!-- 10. Warnings & Precautions -->
+          <div class="rounded-2xl border border-niili-600/80 bg-niili-950/40 p-5">
+            <div class="flex items-center gap-2.5 mb-2">
+              <div class="w-8 h-8 rounded-lg bg-niili-800 text-royal-300 flex items-center justify-center">
+                <i data-lucide="shield-alert" class="w-4 h-4"></i>
+              </div>
+              <h3 class="font-display font-extrabold text-base text-niili-300">10. Warnings and Precautions</h3>
+            </div>
+            <p class="text-sm text-royal-100 leading-relaxed pl-10">${escapeHtml(med.warnings)}</p>
+          </div>
+
+          <!-- 11. Storage Conditions -->
+          <div class="rounded-2xl border border-niili-800/80 bg-obsidian-900/70 p-5">
+            <div class="flex items-center gap-2.5 mb-2">
+              <div class="w-8 h-8 rounded-lg bg-royal-950 border border-royal-700 text-royal-400 flex items-center justify-center">
+                <i data-lucide="thermometer-snowflake" class="w-4 h-4"></i>
+              </div>
+              <h3 class="font-display font-extrabold text-base text-royal-400">11. Storage Conditions</h3>
+            </div>
+            <p class="text-sm text-niili-200 leading-relaxed pl-10">${escapeHtml(med.storageConditions)}</p>
+          </div>
+        </div>
+
+        <!-- Monograph Footer Attribution -->
+        <div class="px-6 py-4 bg-obsidian-950 border-t border-niili-800/70 flex flex-col sm:flex-row items-center justify-between text-xs text-niili-300/80 gap-2">
+          <span class="text-royal-400 font-bold">Pharma Guide Clinical Database • Sohag University Faculty of Pharmacy</span>
+          <span>Educational Reference Only — Consult a licensed physician or pharmacist.</span>
+        </div>
+      `;
+      lucide.createIcons();
+    }
+
+    // -------------------- ADMIN AUTHENTICATION & DASHBOARD --------------------
+    window.fillDemoCredentials = function () {
+      document.getElementById("admin-username").value = "admin";
+      document.getElementById("admin-password").value = "pharma2026";
+    };
+
+    window.handleAdminLogin = function (e) {
+      e.preventDefault();
+      const user = document.getElementById("admin-username").value.trim();
+      const pass = document.getElementById("admin-password").value.trim();
+      const errEl = document.getElementById("admin-login-error");
+
+      if (user === "admin" && pass === "pharma2026") {
+        state.isAdminAuthenticated = true;
+        errEl.classList.add("hidden");
+        document.getElementById("header-admin-label").textContent = "Dashboard";
+        showToast("Welcome back, Administrator!", "success");
+        renderAdminView();
+      } else {
+        errEl.textContent = "Invalid credentials. Use Username: admin and Password: pharma2026";
+        errEl.classList.remove("hidden");
+      }
+    };
+
+    window.handleAdminLogout = function () {
+      state.isAdminAuthenticated = false;
+      document.getElementById("header-admin-label").textContent = "Admin Portal";
+      document.getElementById("admin-username").value = "";
+      document.getElementById("admin-password").value = "";
+      showToast("Logged out of Admin Portal.", "info");
+      renderAdminView();
+    };
+
+    function renderAdminView() {
+      const loginBox = document.getElementById("admin-login-container");
+      const dashBox = document.getElementById("admin-dashboard-container");
+
+      if (!state.isAdminAuthenticated) {
+        loginBox.classList.remove("hidden");
+        dashBox.classList.add("hidden");
+        return;
+      }
+
+      loginBox.classList.add("hidden");
+      dashBox.classList.remove("hidden");
+
+      document.getElementById("kpi-total-medicines").textContent = state.medicines.length;
+      document.getElementById("kpi-total-categories").textContent = state.categories.length;
+
+      renderAdminTable();
+      renderAdminCategoriesList();
+      lucide.createIcons();
+    }
+
+    window.renderAdminTable = function () {
+      const tbody = document.getElementById("admin-medicines-tbody");
+      const query = (document.getElementById("admin-table-search")?.value || "").trim().toLowerCase();
+      if (!tbody) return;
+
+      const filtered = state.medicines.filter(
+        (m) =>
+          !query ||
+          m.brandName.toLowerCase().includes(query) ||
+          m.genericName.toLowerCase().includes(query) ||
+          m.category.toLowerCase().includes(query)
+      );
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="py-8 text-center text-niili-300 text-sm">No matching medicine records found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered
+        .map(
+          (med) => `
+          <tr class="hover:bg-obsidian-900/90 transition-colors">
+            <td class="py-3.5 px-4">
+              <button onclick="openMonograph('${med.id}')" class="font-extrabold text-royal-400 hover:text-white text-left block">
+                ${escapeHtml(med.brandName)}
+              </button>
+              <span class="text-xs text-niili-300/80 block">${escapeHtml(med.genericName)}</span>
+            </td>
+            <td class="py-3.5 px-4">
+              <span class="inline-flex px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-niili-950 text-royal-300 border border-niili-700">
+                ${escapeHtml(med.category)}
+              </span>
+            </td>
+            <td class="py-3.5 px-4 text-xs text-niili-200/80 hidden sm:table-cell">
+              ${escapeHtml(med.pharmaceuticalForm.split("/")[0].trim())}
+            </td>
+            <td class="py-3.5 px-4 text-right whitespace-nowrap">
+              <button onclick="openMedicineFormModal('${med.id}')" title="Edit Medicine"
+                class="p-2 rounded-lg text-royal-300 hover:text-white hover:bg-royal-900/60 border border-transparent hover:border-royal-500/60 transition-colors inline-flex items-center gap-1 text-xs font-bold">
+                <i data-lucide="pencil" class="w-4 h-4 text-royal-400"></i>
+                <span class="hidden md:inline">Edit</span>
+              </button>
+              <button onclick="confirmDeleteMedicine('${med.id}', '${escapeHtml(med.brandName)}')" title="Delete Medicine"
+                class="p-2 rounded-lg text-niili-300 hover:text-white hover:bg-niili-900/70 border border-transparent hover:border-niili-500/70 transition-colors inline-flex items-center gap-1 text-xs font-bold ml-1">
+                <i data-lucide="trash-2" class="w-4 h-4 text-niili-400"></i>
+                <span class="hidden md:inline">Delete</span>
+              </button>
+            </td>
+          </tr>
+        `
+        )
+        .join("");
+      lucide.createIcons();
+    };
+
+    function renderAdminCategoriesList() {
+      const listEl = document.getElementById("admin-categories-list");
+      if (!listEl) return;
+
+      listEl.innerHTML = state.categories
+        .map((cat) => {
+          const count = state.medicines.filter((m) => m.category === cat).length;
+          return `
+            <div class="flex items-center justify-between p-3 rounded-xl bg-obsidian-900 border border-niili-800/80">
+              <div>
+                <span class="font-bold text-sm text-royal-300 block">${escapeHtml(cat)}</span>
+                <span class="text-[11px] text-niili-300/80">${count} ${count === 1 ? "drug" : "drugs"} assigned</span>
+              </div>
+              <button onclick="handleDeleteCategory('${escapeHtml(cat)}', ${count})"
+                class="p-1.5 rounded-lg text-niili-400 hover:text-white hover:bg-niili-950 transition-colors"
+                title="Remove Category">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    // -------------------- ADD / EDIT MEDICINE MODAL HANDLERS --------------------
+    window.openMedicineFormModal = function (medId = null) {
+      populateCategoryDropdowns();
+      const modal = document.getElementById("medicine-form-modal");
+      const titleEl = document.getElementById("medicine-modal-title");
+      const form = document.getElementById("medicine-crud-form");
+      form.reset();
+
+      if (medId) {
+        const med = state.medicines.find((m) => m.id === medId);
+        if (!med) return;
+        titleEl.textContent = `Edit Monograph: ${med.brandName}`;
+        document.getElementById("form-med-id").value = med.id;
+        document.getElementById("form-brand").value = med.brandName;
+        document.getElementById("form-generic").value = med.genericName;
+        document.getElementById("form-ingredient").value = med.activeIngredient;
+        document.getElementById("form-category").value = med.category;
+        document.getElementById("form-class").value = med.drugClass;
+        document.getElementById("form-form").value = med.pharmaceuticalForm;
+        document.getElementById("form-strengths").value = med.availableStrengths;
+        document.getElementById("form-indications").value = med.indications;
+        document.getElementById("form-contraindications").value = med.contraindications;
+        document.getElementById("form-sideEffects").value = med.sideEffects;
+        document.getElementById("form-warnings").value = med.warnings;
+        document.getElementById("form-storage").value = med.storageConditions;
+      } else {
+        titleEl.textContent = "Add New Medicine Monograph";
+        document.getElementById("form-med-id").value = "";
+      }
+
+      modal.classList.remove("hidden");
+      lucide.createIcons();
+    };
+
+    window.closeMedicineFormModal = function () {
+      document.getElementById("medicine-form-modal").classList.add("hidden");
+    };
+
+    window.handleSaveMedicine = function (e) {
+      e.preventDefault();
+      const existingId = document.getElementById("form-med-id").value.trim();
+
+      const medObj = {
+        id: existingId || "med-" + Date.now(),
+        brandName: document.getElementById("form-brand").value.trim(),
+        genericName: document.getElementById("form-generic").value.trim(),
+        activeIngredient: document.getElementById("form-ingredient").value.trim(),
+        category: document.getElementById("form-category").value,
+        drugClass: document.getElementById("form-class").value.trim(),
+        pharmaceuticalForm: document.getElementById("form-form").value.trim(),
+        availableStrengths: document.getElementById("form-strengths").value.trim(),
+        indications: document.getElementById("form-indications").value.trim(),
+        contraindications: document.getElementById("form-contraindications").value.trim(),
+        sideEffects: document.getElementById("form-sideEffects").value.trim(),
+        warnings: document.getElementById("form-warnings").value.trim(),
+        storageConditions: document.getElementById("form-storage").value.trim()
+      };
+
+      for (const [key, val] of Object.entries(medObj)) {
+        if (!val) {
+          showToast("Please complete all 11 clinical monograph fields.", "error");
+          return;
+        }
+      }
+
+      persistMedicine(medObj);
+      closeMedicineFormModal();
+      showToast(existingId ? `Updated "${medObj.brandName}" successfully.` : `Added "${medObj.brandName}" to database.`, "success");
+    };
+
+    // -------------------- CATEGORY CRUD HANDLERS --------------------
+    window.handleAddCategory = function (e) {
+      e.preventDefault();
+      const input = document.getElementById("new-category-input");
+      const name = input.value.trim();
+      if (!name) return;
+
+      if (state.categories.some((c) => c.toLowerCase() === name.toLowerCase())) {
+        showToast("This therapeutic category already exists.", "error");
+        return;
+      }
+
+      persistCategory(name);
+      input.value = "";
+      showToast(`Category "${name}" added.`, "success");
+    };
+
+    window.handleDeleteCategory = function (catName, assignedCount) {
+      if (assignedCount > 0) {
+        showToast(`Cannot delete "${catName}" because ${assignedCount} medicine(s) belong to it.`, "error");
+        return;
+      }
+      removeCategoryByName(catName);
+      showToast(`Category "${catName}" removed.`, "info");
+    };
+
+    // -------------------- CUSTOM CONFIRMATION MODAL --------------------
+    let pendingConfirmCallback = null;
+
+    function openConfirmModal(title, message, onConfirm) {
+      document.getElementById("confirm-title").textContent = title;
+      document.getElementById("confirm-message").textContent = message;
+      pendingConfirmCallback = onConfirm;
+      document.getElementById("confirm-modal").classList.remove("hidden");
+      lucide.createIcons();
+    }
+
+    window.closeConfirmModal = function () {
+      document.getElementById("confirm-modal").classList.add("hidden");
+      pendingConfirmCallback = null;
+    };
+
+    document.getElementById("confirm-yes-btn").addEventListener("click", () => {
+      if (pendingConfirmCallback) {
+        pendingConfirmCallback();
+      }
+      closeConfirmModal();
+    });
+
+    window.confirmDeleteMedicine = function (id, brandName) {
+      openConfirmModal(
+        "Delete Medicine Record?",
+        `Are you sure you want to permanently remove "${brandName}" from Pharma Guide?`,
+        () => {
+          removeMedicineById(id);
+          showToast(`Deleted "${brandName}" from database.`, "info");
+        }
+      );
+    };
+
+    window.confirmResetDemoData = function () {
+      openConfirmModal(
+        "Reset Demo Database?",
+        "This will restore all default verified medicines and categories.",
+        () => {
+          state.medicines = JSON.parse(JSON.stringify(INITIAL_MEDICINES));
+          state.categories = [...DEFAULT_CATEGORIES];
+          saveDatabaseToStorage();
+          refreshAllViews();
+          showToast("Demo database restored to verified baseline.", "success");
+        }
+      );
+    };
+
+    // -------------------- TOAST & UTILITY HELPERS --------------------
+    function showToast(message, type = "success") {
+      const container = document.getElementById("toast-container");
+      const toast = document.createElement("div");
+
+      const styles = {
+        success: "bg-obsidian-850 text-royal-200 border-royal-400",
+        error: "bg-niili-950 text-royal-200 border-niili-400",
+        info: "bg-obsidian-900 text-niili-200 border-royal-500"
+      };
+
+      const icons = {
+        success: "check-circle",
+        error: "alert-circle",
+        info: "info"
+      };
+
+      toast.className = `pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-xl shadow-2xl border border-niili-700 border-l-4 text-xs sm:text-sm font-bold transition-all transform translate-y-2 opacity-0 ${styles[type] || styles.info}`;
+      toast.innerHTML = `<i data-lucide="${icons[type] || "info"}" class="w-4 h-4 shrink-0 text-royal-400"></i><span>${escapeHtml(message)}</span>`;
+
+      container.appendChild(toast);
+      lucide.createIcons();
+
+      requestAnimationFrame(() => {
+        toast.classList.remove("translate-y-2", "opacity-0");
+      });
+
+      setTimeout(() => {
+        toast.classList.add("opacity-0", "translate-y-2");
+        setTimeout(() => toast.remove(), 300);
+      }, 3200);
+    }
+
+    function escapeHtml(str) {
+      if (typeof str !== "string") return "";
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    // -------------------- BOOTSTRAP APP --------------------
+    window.addEventListener("DOMContentLoaded", () => {
+      initDatabase();
+      navigateTo("home");
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>
